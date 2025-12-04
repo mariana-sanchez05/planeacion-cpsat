@@ -1,18 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Planeación de Turnos</title>
+    <meta charset="utf-8" />
+    <title>Planeación CP-SAT - Inicio</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        label { display: block; margin: 8px 0 4px; }
+        input, select { padding: 6px; width: 220px; }
+        .row { margin-bottom: 12px; }
+        button { padding: 10px 14px; font-size: 14px; cursor: pointer; }
+    </style>
 </head>
 <body>
     <h1>Bienvenido a la Planeación CP-SAT</h1>
+    <p>Configura los parámetros y presiona <strong>Generar planeación</strong>.</p>
 
-    <a href="/planificacion">
-        <button>Generar Planeación Normal</button>
-    </a>
+    <form action="/planificacion" method="get">
+        <div class="row">
+            <label for="start_date">Fecha inicio (primer día de la primera semana):</label>
+            <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+        </div>
 
-    <a href="/planificacion?restriccion=si">
-        <button>Generar Planeación con Restricción de Apertura</button>
-    </a>
+        <div class="row">
+            <label for="weeks">Semanas a planificar (1-8):</label>
+            <input type="number" id="weeks" name="weeks" min="1" max="8" value="{{ default_weeks }}">
+        </div>
+
+        <div class="row">
+            <label>Rotación entre semanas (no repetir turno para un mismo asesor):</label>
+            <input type="checkbox" id="rotation" name="rotation" value="si"> <label for="rotation" style="display:inline">Activar rotación</label>
+        </div>
+
+        <div class="row">
+            <label for="restriction">Asesora con turno fijo de Apertura (opcional):</label>
+            <select name="restriction" id="restriction">
+                <option value="">(ninguna)</option>
+                {% for a in advisors %}
+                    <option value="{{a}}">{{a}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <button type="submit">Generar planeación</button>
+        </div>
+    </form>
 </body>
 </html>
+
 
